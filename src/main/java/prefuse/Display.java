@@ -937,7 +937,7 @@ public class Display extends JComponent {
                         m_queue.addToPickingQueue(item);
                 }
 
-                DisplayZoomInfo.setVisibleItemCount(renderableCount);
+                DisplayInfo.setVisibleItemCount(renderableCount);
 
                 // sort the rendering queue
                 m_queue.sortRenderQueue();

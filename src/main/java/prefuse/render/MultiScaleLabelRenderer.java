@@ -1,15 +1,9 @@
 package prefuse.render;
 
-import prefuse.util.display.DisplayZoomInfo;
+import prefuse.util.display.DisplayInfo;
 import prefuse.visual.VisualItem;
 
-/**
- * Created with IntelliJ IDEA.
- * User: eamonnmaguire
- * Date: 05/03/2013
- * Time: 16:22
- * To change this template use File | Settings | File Templates.
- */
+
 public class MultiScaleLabelRenderer extends LabelRenderer {
 
     /**
@@ -23,6 +17,7 @@ public class MultiScaleLabelRenderer extends LabelRenderer {
     /**
      * Create a new LabelRenderer. Draws a text label using the given
      * text data field and does not draw an image.
+     *
      * @param textField the data field for the text label.
      */
     public MultiScaleLabelRenderer(String textField) {
@@ -33,12 +28,13 @@ public class MultiScaleLabelRenderer extends LabelRenderer {
      * Create a new LabelRenderer. Draws a text label using the given text
      * data field, and draws the image at the location reported by the
      * given image data field.
-     * @param textField the data field for the text label
+     *
+     * @param textField  the data field for the text label
      * @param imageField the data field for the image location. This value
-     * in the data field should be a URL, a file within the current classpath,
-     * a file on the filesystem, or null for no image. If the
-     * <code>imageField</code> parameter is null, no images at all will be
-     * drawn.
+     *                   in the data field should be a URL, a file within the current classpath,
+     *                   a file on the filesystem, or null for no image. If the
+     *                   <code>imageField</code> parameter is null, no images at all will be
+     *                   drawn.
      */
     public MultiScaleLabelRenderer(String textField, String imageField) {
         super(textField, imageField);
@@ -48,11 +44,12 @@ public class MultiScaleLabelRenderer extends LabelRenderer {
      * Returns a location string for the image to draw based on the current zoom level.
      * Subclasses can override this class to perform custom image selection beyond looking up the value
      * from a data field.
+     *
      * @param item the item for which to select an image to draw
      * @return the location string for the image to use, or null for no image
      */
     protected String getImageLocation(VisualItem item) {
-        int availableItems = DisplayZoomInfo.getCurrentZoom();
+        int availableItems = DisplayInfo.getVisibleItemCount();
         // in this instance, depending on the number of available items,
         // we can search for different images to render.
         // e.g. availableItems < 10, then show detailed rendering
@@ -66,7 +63,7 @@ public class MultiScaleLabelRenderer extends LabelRenderer {
         String imageToRetrieve = m_imageName + resolution.getAppender();
         if (item.canGetString(imageToRetrieve)) {
             return item.getString(imageToRetrieve);
-        } else if(item.canGetString(m_imageName)){
+        } else if (item.canGetString(m_imageName)) {
             return item.getString(m_imageName);
         } else {
             return null;
@@ -75,9 +72,9 @@ public class MultiScaleLabelRenderer extends LabelRenderer {
 
     private Resolution getResolution(int availableItems) {
         Resolution resolution = Resolution.L;
-        if(availableItems < 10) {
+        if (availableItems < 10) {
             resolution = Resolution.S;
-        } else if(availableItems < 20) {
+        } else if (availableItems < 20) {
             resolution = Resolution.M;
         }
         return resolution;
@@ -85,7 +82,7 @@ public class MultiScaleLabelRenderer extends LabelRenderer {
 
 
     enum Resolution {
-        S("@s"), M("@M"), L("@L");
+        S("@S"), M("@M"), L("@L");
 
         private String appender;
 

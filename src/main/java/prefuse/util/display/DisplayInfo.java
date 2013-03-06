@@ -7,16 +7,16 @@ package prefuse.util.display;
  * Time: 17:04
  * To change this template use File | Settings | File Templates.
  */
-public class DisplayZoomInfo {
+public class DisplayInfo {
 
     private static int VISIBLE_ITEMS;
 
-    public static int getCurrentZoom() {
+    public static int getVisibleItemCount() {
         return VISIBLE_ITEMS;
     }
 
     public static void setVisibleItemCount(int visibleItemCount) {
         System.out.println("Numer of visible items is " + visibleItemCount);
-        DisplayZoomInfo.VISIBLE_ITEMS = visibleItemCount;
+        DisplayInfo.VISIBLE_ITEMS = visibleItemCount;
     }
 }
