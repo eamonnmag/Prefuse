@@ -16,7 +16,6 @@ public class DisplayInfo {
     }
 
     public static void setVisibleItemCount(int visibleItemCount) {
-        System.out.println("Numer of visible items is " + visibleItemCount);
         DisplayInfo.VISIBLE_ITEMS = visibleItemCount;
     }
 }
