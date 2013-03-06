@@ -1,9 +1,9 @@
-package test.prefuse.data;
+package prefuse.data;
 
-import junit.framework.TestCase;
-import prefuse.data.CascadedTable;
-import prefuse.data.Table;
-import prefuse.data.Tuple;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import prefuse.data.expression.AbstractPredicate;
 import prefuse.data.expression.AndPredicate;
 import prefuse.data.expression.ArithmeticExpression;
@@ -15,28 +15,29 @@ import prefuse.data.expression.Predicate;
 import prefuse.data.expression.RangePredicate;
 import prefuse.data.io.DelimitedTextTableWriter;
 import prefuse.data.util.TableIterator;
-import test.prefuse.TestConfig;
+import prefuse.TestConfig;
 
-public class CascadedTableTest extends TestCase implements TableTestData {
+public class CascadedTableTest implements TableTestData {
 
     Table t;
     
     /**
      * @see junit.framework.TestCase#setUp()
      */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         t = TableTest.getTestCaseTable();
     }
     
     /**
      * @see junit.framework.TestCase#tearDown()
      */
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @After
+    public void tearDown() throws Exception {
         t = null;
     }
-    
+
+    @Test
     public void testCascadedTableRangeFilters() {
         double lo = 1;
         double hi = 20;
@@ -73,10 +74,10 @@ public class CascadedTableTest extends TestCase implements TableTestData {
                 for (int c = 0; c < NCOLS; ++c) {
                     Object o1 = TABLE[c][ft.getColumnRow(row,c)];
                     Object o2 = ft.get(row,HEADERS[c]);
-                    assertEquals(o1, o2);
+                    Assert.assertEquals(o1, o2);
                 }
             } catch (Exception e) {
-                fail("Caught exception: " + e);
+                Assert.fail("Caught exception: " + e);
             }
         }
 
@@ -87,7 +88,7 @@ public class CascadedTableTest extends TestCase implements TableTestData {
         while (iter.hasNext()) {
             int row = iter.nextInt();
             iter.setDouble(name, Math.E);
-            assertTrue(Math.E == ft.getDouble(row, name));
+            Assert.assertTrue(Math.E == ft.getDouble(row, name));
         }
 
         int nr = t.addRow();
@@ -105,6 +106,7 @@ public class CascadedTableTest extends TestCase implements TableTestData {
      * Test method for
      * 'prefuse.data.CascadedTable.CascadedTable(Table,RowFilter)'
      */
+    @Test
     public void testCascadedTableTableRowFilter() {
         final float thresh = 5.0f;
         
@@ -123,11 +125,11 @@ public class CascadedTableTest extends TestCase implements TableTestData {
                     for ( int c=0; c<NCOLS; ++c ) {
                         Object o1 = TABLE[c][i];
                         Object o2 = ft.get(r, HEADERS[c]);
-                        assertEquals(o1, o2);
+                        Assert.assertEquals(o1, o2);
                     }
                     ++r;
                 } catch ( Exception e ) {
-                    fail("Caught exception: "+e);
+                    Assert.fail("Caught exception: " + e);
                 }
             }
         }
@@ -139,7 +141,7 @@ public class CascadedTableTest extends TestCase implements TableTestData {
         while ( iter.hasNext() ) {
             int row = iter.nextInt();
             iter.setDouble(name, Math.E);
-            assertTrue(Math.E == ft.getDouble(row, name));
+            Assert.assertTrue(Math.E == ft.getDouble(row, name));
         }
         
         int nr = t.addRow();

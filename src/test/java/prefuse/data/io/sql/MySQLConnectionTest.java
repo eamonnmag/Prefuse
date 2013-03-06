@@ -1,24 +1,26 @@
-package test.prefuse.data.io.sql;
+package prefuse.data.io.sql;
 
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 
 import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
 import prefuse.data.Table;
-import prefuse.data.io.sql.ConnectionFactory;
-import prefuse.data.io.sql.DatabaseDataSource;
 import prefuse.util.ui.JPrefuseTable;
-import test.prefuse.TestConfig;
+import prefuse.TestConfig;
 
-public class MySQLConnectionTest extends TestCase {
+public class MySQLConnectionTest {
 
     // logger
     private static final Logger s_logger 
         = Logger.getLogger(MySQLConnectionTest.class.getName());
     
     private Table m_table;
-    
+
+    @Ignore
     public void testLoadFromMySQLDatabase() {
         String host     = "localhost";
         String database = "friendster";
@@ -47,11 +49,11 @@ public class MySQLConnectionTest extends TestCase {
             
         } catch ( Exception e ) {
             e.printStackTrace();
-            fail("Error connecting to database");
+            Assert.fail("Error connecting to database");
         }
         
         // text-dump
-        StringBuffer sbuf = new StringBuffer('\n');
+        StringBuffer sbuf = new StringBuffer("\n");
         sbuf.append("--[Table: ").append(t.getRowCount()).append(" rows, ")
             .append(t.getColumnCount()).append(" cols]--\n");
         for (int c = 0, idx = -1; c < t.getColumnCount(); ++c) {

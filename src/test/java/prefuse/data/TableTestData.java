@@ -1,4 +1,4 @@
-package test.prefuse.data;
+package prefuse.data;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -22,8 +22,7 @@ public interface TableTestData {
             float.class, double.class, String.class };
     
     public static final Integer[] COLUMN1 
-        = { new Integer(1), new Integer(2), 
-            new Integer(3), new Integer(4) };
+        = {1, 2, 3, 4};
     
     public static final Date[]    COLUMN2 
         = { new Date(TimeLib.getDate(CAL,2001,0,1)),
@@ -38,12 +37,11 @@ public interface TableTestData {
             new Time(TimeLib.getTime(CAL,19,12,0)) };
     
     public static final Float[]   COLUMN4 
-        = { new Float(1.1f), new Float(2.3f),
-            new Float(1e-4f), new Float(1e6f) };
+        = { 1.1f, 2.3f,
+            1e-4f, 1e6f };
     
     public static final Double[]  COLUMN5
-        = { new Double(12.34), new Double(3.3334), 
-            new Double(1e4), new Double(1.3e-2) };
+        = { 12.34, 3.3334, 1e4, 1.3e-2 };
     
     public static final String[] COLUMN6
         = { "This is some text.", "13f", "12.3", 

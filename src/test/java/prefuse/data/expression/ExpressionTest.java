@@ -1,6 +1,8 @@
-package test.prefuse.data.expression;
+package prefuse.data.expression;
 
 import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
 import prefuse.data.expression.AndPredicate;
 import prefuse.data.expression.ArithmeticExpression;
 import prefuse.data.expression.ColumnExpression;
@@ -13,7 +15,7 @@ import prefuse.data.expression.parser.ExpressionParser;
 import prefuse.data.expression.parser.ParseException;
 import prefuse.data.expression.parser.TokenMgrError;
 
-public class ExpressionTest extends TestCase {
+public class ExpressionTest {
 
     private static String[] expr = {
         "District <= 0",
@@ -50,18 +52,19 @@ public class ExpressionTest extends TestCase {
         ObjectLiteral.class
     };
     
+    @Test
     public void testExpressionParser() {
         for ( int i=0; i<expr.length; ++i ) {
             try {
                 Expression e = ExpressionParser.parse(expr[i], true);
-                assertEquals(true, type[i]!=null);
-                assertEquals(true, type[i].isAssignableFrom(e.getClass()));
+                Assert.assertEquals(true, type[i] != null);
+                Assert.assertEquals(true, type[i].isAssignableFrom(e.getClass()));
             } catch ( TokenMgrError tme ) {
                 System.out.println(tme);
-                assertEquals(null, type[i]);
+                Assert.assertEquals(null, type[i]);
             } catch ( ParseException pe ) {
                 System.out.println(pe);
-                assertEquals(null, type[i]);
+                Assert.assertEquals(null, type[i]);
             }
         }
     }

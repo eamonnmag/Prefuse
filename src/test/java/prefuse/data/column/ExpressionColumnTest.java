@@ -1,6 +1,10 @@
-package test.prefuse.data.column;
+package prefuse.data.column;
 
 import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import prefuse.data.Table;
 import prefuse.data.expression.ArithmeticExpression;
 import prefuse.data.expression.ColumnExpression;
@@ -8,24 +12,25 @@ import prefuse.data.expression.Expression;
 import prefuse.data.expression.NumericLiteral;
 import prefuse.data.io.DelimitedTextTableWriter;
 import prefuse.data.util.TableIterator;
-import test.prefuse.TestConfig;
-import test.prefuse.data.TableTest;
-import test.prefuse.data.TableTestData;
+import prefuse.TestConfig;
+import prefuse.data.TableTest;
+import prefuse.data.TableTestData;
 
-public class ExpressionColumnTest extends TestCase implements TableTestData {
+public class ExpressionColumnTest implements TableTestData {
 
     Table t;
     
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         t = TableTest.getTestCaseTable();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @After
+    public void tearDown() throws Exception {
         t = null;
     }
-    
+
+    @Test
     public void testDerivedColumn() {
         String AVG = "average";
         
@@ -46,17 +51,17 @@ public class ExpressionColumnTest extends TestCase implements TableTestData {
             float  f = it.getFloat(HEADERS[3]);
             double d = it.getDouble(HEADERS[4]);
             double av = (f+d)/2;
-            assertTrue(av == it.getDouble(AVG));
+            Assert.assertTrue(av == it.getDouble(AVG));
         }
         
         int r = t.addRow();
-        assertTrue(t.getDouble(r, AVG) == 0.0);
+        Assert.assertTrue(t.getDouble(r, AVG) == 0.0);
         
         t.setFloat(r, HEADERS[3], 2.0f);
-        assertTrue(t.getDouble(r, AVG) == 1.0);
+        Assert.assertTrue(t.getDouble(r, AVG) == 1.0);
         
         t.setDouble(r, HEADERS[4], 3.0f);
-        assertTrue(t.getDouble(r, AVG) == 2.5);
+        Assert.assertTrue(t.getDouble(r, AVG) == 2.5);
                 
         if ( TestConfig.verbose() ) {
             try {

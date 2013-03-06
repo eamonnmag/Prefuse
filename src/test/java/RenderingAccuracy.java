@@ -2,7 +2,6 @@
  * Copyright (c) 2004-2006 Regents of the University of California.
  * See "license-prefuse.txt" for licensing terms.
  */
-package test;
 
 import java.awt.Color;
 import java.awt.Dimension;

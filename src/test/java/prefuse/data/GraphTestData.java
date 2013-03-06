@@ -1,4 +1,4 @@
-package test.prefuse.data;
+package prefuse.data;
 
 /**
  * @author <a href="http://jheer.org">jeffrey heer</a>

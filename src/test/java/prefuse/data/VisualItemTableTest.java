@@ -1,4 +1,4 @@
-package test.prefuse.data;
+package prefuse.data;
 
 import junit.framework.TestCase;
 import prefuse.Visualization;
@@ -9,7 +9,7 @@ import prefuse.data.expression.Predicate;
 import prefuse.data.io.DelimitedTextTableWriter;
 import prefuse.data.util.TableIterator;
 import prefuse.visual.VisualTable;
-import test.prefuse.TestConfig;
+import prefuse.TestConfig;
 
 public class VisualItemTableTest extends TestCase implements TableTestData {
 

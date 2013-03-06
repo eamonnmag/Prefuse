@@ -1,4 +1,4 @@
-package test.prefuse;
+package prefuse;
 
 public class TestConfig {
     

@@ -1,114 +1,126 @@
-package test.prefuse.data.util;
+package prefuse.data.util;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import prefuse.util.collections.FloatIntTreeMap;
 import prefuse.util.collections.LiteralIterator;
 
-public class FloatIntTreeMapTest extends TestCase {
+public class FloatIntTreeMapTest {
     
     FloatIntTreeMap map = new FloatIntTreeMap(true);
     int[] keys = { 1, 2, 5, 3, 4, 5, 10 };
     int[] sort;
     
     public FloatIntTreeMapTest() {
-        sort = (int[])keys.clone();
+        sort = keys.clone();
         Arrays.sort(sort);
     }
     
-    protected void setUp() throws Exception {
-        super.setUp();
-        for ( int i=0; i<keys.length; ++i ) {
-            map.put(keys[i],keys[i]);
+    @Before
+    public void setUp() throws Exception {
+        for (int key : keys) {
+            map.put(key, key);
         }
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @After
+    public void tearDown() throws Exception {
         map.clear();
     }
 
     /*
      * Test method for 'edu.berkeley.guir.prefuse.data.util.IntIntTreeMap.clear()'
      */
+    @Test
     public void testClear() {
         map.clear();
-        assertTrue(map.isEmpty());
+        Assert.assertTrue(map.isEmpty());
         try {
             map.keyIterator().next();
-            fail("Iterator should be empty");
+            Assert.fail("Iterator should be empty");
         } catch ( NoSuchElementException success ) {
         }
-        assertEquals(map.get(1),Integer.MIN_VALUE);
+        Assert.assertEquals(map.get(1), Integer.MIN_VALUE);
     }
 
     /*
      * Test method for 'edu.berkeley.guir.prefuse.data.util.IntIntTreeMap.get(int)'
      */
+    @Test
     public void testGet() {
         for ( int i=0; i<map.size(); ++i ) {
-            assertEquals(map.get(keys[i]),keys[i]);
+            Assert.assertEquals(map.get(keys[i]), keys[i]);
         }
     }
 
     /*
      * Test method for 'edu.berkeley.guir.prefuse.data.util.IntIntTreeMap.put(int, int)'
      */
+    @Test
     public void testPut() {
         map.clear();
         int size = 0;
-        for ( int i=0; i<keys.length; ++i ) {
-            map.put(keys[i],keys[i]);
-            assertEquals(++size, map.size());
-            assertEquals(map.get(keys[i]), keys[i]);
+        for (int key : keys) {
+            map.put(key, key);
+            Assert.assertEquals(++size, map.size());
+            Assert.assertEquals(map.get(key), key);
         }
     }
 
     /*
      * Test method for 'edu.berkeley.guir.prefuse.data.util.IntIntTreeMap.remove(int)'
      */
+    @Test
     public void testRemoveInt() {
         int size = map.size();
         for ( int i=0; i<keys.length; ++i ) {
             int val = map.remove(keys[i]);
-            assertEquals(keys[i], val);
-            assertEquals(--size, map.size());
+            Assert.assertEquals(keys[i], val);
+            Assert.assertEquals(--size, map.size());
         }
         for ( int i=0; i<keys.length; ++i ) {
-            assertEquals(map.get(keys[i]), Integer.MIN_VALUE);
+            Assert.assertEquals(map.get(keys[i]), Integer.MIN_VALUE);
         }
     }
 
     /*
      * Test method for 'edu.berkeley.guir.prefuse.data.util.IntIntTreeMap.firstKey()'
      */
+    @Test
     public void testFirstKey() {
-        assertEquals((int)map.firstKey(), sort[0]);
+        Assert.assertEquals((int) map.firstKey(), sort[0]);
     }
 
     /*
      * Test method for 'edu.berkeley.guir.prefuse.data.util.IntIntTreeMap.lastKey()'
      */
+    @Test
     public void testLastKey() {
-        assertEquals((int)map.lastKey(), sort[sort.length-1]);
+        Assert.assertEquals((int) map.lastKey(), sort[sort.length - 1]);
     }
 
     /*
      * Test method for 'edu.berkeley.guir.prefuse.data.util.IntIntTreeMap.keyIterator()'
      */
+    @Test
     public void testKeyIterator() {
         LiteralIterator iter = map.keyIterator();
         for ( int i=0; iter.hasNext(); ++i ) {
             float key = iter.nextFloat();
-            assertEquals(sort[i], (int)key);
+            Assert.assertEquals(sort[i], (int) key);
         }
     }
 
     /*
      * Test method for 'edu.berkeley.guir.prefuse.data.util.IntIntTreeMap.subMap(int, int)'
      */
+    @Test
     public void testSubMap() {
         int k1, i1, i2, i, k, len = sort.length-1;
         for ( i=0, k=sort[0]; k==sort[0]; ++i, k=sort[i] );
@@ -118,39 +130,42 @@ public class FloatIntTreeMapTest extends TestCase {
         
         LiteralIterator iter = map.keyRangeIterator(k1, true, sort[len], false);
         for ( i=i1; iter.hasNext() && i <= i2; ++i ) {
-            assertEquals((int)iter.nextFloat(), sort[i]);
+            Assert.assertEquals((int) iter.nextFloat(), sort[i]);
         }
-        assertTrue(!iter.hasNext() && i == i2+1);
+        Assert.assertTrue(!iter.hasNext() && i == i2 + 1);
         
         iter = map.valueRangeIterator(k1, true, sort[len], false);
         for ( i=i1; iter.hasNext() && i <= i2; ++i ) {
-            assertEquals(iter.nextInt(), sort[i]);
+            Assert.assertEquals(iter.nextInt(), sort[i]);
         }
-        assertTrue(!iter.hasNext() && i == i2+1);
+        Assert.assertTrue(!iter.hasNext() && i == i2 + 1);
     }
 
     /*
      * Test method for 'edu.berkeley.guir.prefuse.data.util.AbstractTreeMap.size()'
      */
+    @Test
     public void testSize() {
-        assertEquals(map.size(), keys.length);
+        Assert.assertEquals(map.size(), keys.length);
     }
 
     /*
      * Test method for 'edu.berkeley.guir.prefuse.data.util.AbstractTreeMap.isEmpty()'
      */
+    @Test
     public void testIsEmpty() {
-        assertFalse(map.isEmpty());
+        Assert.assertFalse(map.isEmpty());
     }
 
     /*
      * Test method for 'edu.berkeley.guir.prefuse.data.util.AbstractTreeMap.valueIterator()'
      */
+    @Test
     public void testValueIterator() {
         LiteralIterator iter = map.valueIterator(true);
         for ( int i=0; iter.hasNext(); ++i ) {
             int val = iter.nextInt();
-            assertEquals(sort[i], val);
+            Assert.assertEquals(sort[i], val);
         }
     }
 

@@ -1,16 +1,16 @@
-package test.prefuse.data;
+package prefuse.data;
 
 import java.util.Iterator;
 
 import junit.framework.TestCase;
-import prefuse.data.Edge;
-import prefuse.data.Graph;
-import prefuse.data.Node;
-import prefuse.data.Table;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import prefuse.util.GraphLib;
-import test.prefuse.TestConfig;
+import prefuse.TestConfig;
 
-public class GraphTest extends TestCase implements GraphTestData {
+public class GraphTest implements GraphTestData {
 
     public static Graph getTestCaseGraph() {
         Table nodes = new Table(NNODES, NNODECOLS);
@@ -35,19 +35,20 @@ public class GraphTest extends TestCase implements GraphTestData {
     
     private Graph graph;
     
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         graph = getTestCaseGraph();
     }
 
     /**
      * @see junit.framework.TestCase#tearDown()
      */
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @After
+    public void tearDown() throws Exception {
         graph = null;
     }
-    
+
+    @Test
     public void testGraph() {
         boolean verbose = TestConfig.verbose();
         
@@ -55,11 +56,11 @@ public class GraphTest extends TestCase implements GraphTestData {
         Table edges = graph.getEdgeTable();
         
         // check the basics
-        assertEquals(NNODES, graph.getNodeCount());
-        assertEquals(NEDGES, graph.getEdgeCount());
-        assertEquals(NHEADERS[0], graph.getNodeKeyField());
-        assertEquals(EHEADERS[0], graph.getEdgeSourceField());
-        assertEquals(EHEADERS[1], graph.getEdgeTargetField());
+        Assert.assertEquals(NNODES, graph.getNodeCount());
+        Assert.assertEquals(NEDGES, graph.getEdgeCount());
+        Assert.assertEquals(NHEADERS[0], graph.getNodeKeyField());
+        Assert.assertEquals(EHEADERS[0], graph.getEdgeSourceField());
+        Assert.assertEquals(EHEADERS[1], graph.getEdgeTargetField());
         
         // check all nodes, basic data
         Iterator niter = graph.nodes();
@@ -71,8 +72,8 @@ public class GraphTest extends TestCase implements GraphTestData {
             
             // check data members
             for ( int i=0; i<NNODECOLS; ++i ) {
-                assertEquals(NODES[i][nrow], node.get(NHEADERS[i]));
-                assertEquals(NODES[i][nrow], nodes.get(nrow, NHEADERS[i]));
+                Assert.assertEquals(NODES[i][nrow], node.get(NHEADERS[i]));
+                Assert.assertEquals(NODES[i][nrow], nodes.get(nrow, NHEADERS[i]));
                 if ( verbose ) System.out.print(NHEADERS[i]+":"+NODES[i][nrow]+"\t");
             }
             
@@ -84,25 +85,25 @@ public class GraphTest extends TestCase implements GraphTestData {
             }
             
             // check degrees
-            assertEquals(node.getInDegree(),      INDEGREE[nrow]);
-            assertEquals(graph.getInDegree(nrow),  INDEGREE[nrow]);
-            assertEquals(node.getOutDegree(),     OUTDEGREE[nrow]);
-            assertEquals(graph.getOutDegree(nrow), OUTDEGREE[nrow]);
+            Assert.assertEquals(node.getInDegree(), INDEGREE[nrow]);
+            Assert.assertEquals(graph.getInDegree(nrow), INDEGREE[nrow]);
+            Assert.assertEquals(node.getOutDegree(), OUTDEGREE[nrow]);
+            Assert.assertEquals(graph.getOutDegree(nrow), OUTDEGREE[nrow]);
             
             // check edges
             Iterator eiter = node.inEdges();
             while ( eiter.hasNext() ) {
                 Edge edge = (Edge)eiter.next();
                 int erow = edge.getRow();
-                assertEquals(nrow, edge.getTargetNode().getRow());
-                assertEquals(nrow, graph.getTargetNode(erow));
+                Assert.assertEquals(nrow, edge.getTargetNode().getRow());
+                Assert.assertEquals(nrow, graph.getTargetNode(erow));
             }
             eiter = node.outEdges();
             while ( eiter.hasNext() ) {
                 Edge edge = (Edge)eiter.next();
                 int erow = edge.getRow();
-                assertEquals(nrow, edge.getSourceNode().getRow());
-                assertEquals(nrow, graph.getSourceNode(erow));
+                Assert.assertEquals(nrow, edge.getSourceNode().getRow());
+                Assert.assertEquals(nrow, graph.getSourceNode(erow));
             }
         }
         
@@ -114,30 +115,31 @@ public class GraphTest extends TestCase implements GraphTestData {
             
             // check data members
             for ( int i=0; i<NEDGECOLS; ++i ) {
-                assertEquals(EDGES[i][erow], edge.get(EHEADERS[i]));
-                assertEquals(EDGES[i][erow], edges.get(erow, EHEADERS[i]));
+                Assert.assertEquals(EDGES[i][erow], edge.get(EHEADERS[i]));
+                Assert.assertEquals(EDGES[i][erow], edges.get(erow, EHEADERS[i]));
             }
             
             // check nodes
             Node s = edge.getSourceNode();
             int srow = s.getRow();
-            assertEquals(srow, graph.getSourceNode(erow));
+            Assert.assertEquals(srow, graph.getSourceNode(erow));
             int sk = nodes.getInt(srow, NHEADERS[0]);
-            assertEquals(sk, edges.getInt(erow, EHEADERS[0]));
+            Assert.assertEquals(sk, edges.getInt(erow, EHEADERS[0]));
             
             Node t = edge.getTargetNode();
             int trow = t.getRow();
-            assertEquals(trow, graph.getTargetNode(erow));
+            Assert.assertEquals(trow, graph.getTargetNode(erow));
             int tk = nodes.getInt(trow, NHEADERS[0]);
-            assertEquals(tk, edges.getInt(erow, EHEADERS[1]));
+            Assert.assertEquals(tk, edges.getInt(erow, EHEADERS[1]));
             
-            assertEquals(srow, edge.getAdjacentNode(t).getRow());
-            assertEquals(trow, edge.getAdjacentNode(s).getRow());
-            assertEquals(srow, graph.getAdjacentNode(erow, trow));
-            assertEquals(trow, graph.getAdjacentNode(erow, srow));
+            Assert.assertEquals(srow, edge.getAdjacentNode(t).getRow());
+            Assert.assertEquals(trow, edge.getAdjacentNode(s).getRow());
+            Assert.assertEquals(srow, graph.getAdjacentNode(erow, trow));
+            Assert.assertEquals(trow, graph.getAdjacentNode(erow, srow));
         }
     }
     
+    @Test
     public void testRemoveNode() {
         int cliqueSize = 5;
         Graph g = GraphLib.getClique(cliqueSize);
@@ -149,15 +151,15 @@ public class GraphTest extends TestCase implements GraphTestData {
             edges[i] = (Edge)it.next();
         }
         
-        assertEquals(true, g.removeNode(rem));
-        assertEquals(false, rem.isValid());
+        Assert.assertEquals(true, g.removeNode(rem));
+        Assert.assertEquals(false, rem.isValid());
         
         Iterator nodes = g.nodes();
         while ( nodes.hasNext() ) {
-            assertEquals(cliqueSize-2, ((Node)nodes.next()).getDegree());
+            Assert.assertEquals(cliqueSize - 2, ((Node) nodes.next()).getDegree());
         }
         for ( int i=0; i<edges.length; ++i ) {
-            assertEquals(false, edges[i].isValid());
+            Assert.assertEquals(false, edges[i].isValid());
         }
     }
 }
