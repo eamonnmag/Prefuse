@@ -6,6 +6,9 @@ import prefuse.visual.VisualItem;
 
 public class MultiScaleLabelRenderer extends LabelRenderer {
 
+    private int detailedLimit = 15;
+    private int mediumLimit = 30;
+
     /**
      * Create a new LabelRenderer. By default the field "label" is used
      * as the field name for looking up text, and no image is used.
@@ -40,6 +43,14 @@ public class MultiScaleLabelRenderer extends LabelRenderer {
         super(textField, imageField);
     }
 
+    public void setDetailedLimit(int detailedLimit) {
+        this.detailedLimit = detailedLimit;
+    }
+
+    public void setMediumLimit(int mediumLimit) {
+        this.mediumLimit = mediumLimit;
+    }
+
     /**
      * Returns a location string for the image to draw based on the current zoom level.
      * Subclasses can override this class to perform custom image selection beyond looking up the value
@@ -61,6 +72,8 @@ public class MultiScaleLabelRenderer extends LabelRenderer {
         Resolution resolution = getResolution(availableItems);
 
         String imageToRetrieve = m_imageName + resolution.getAppender();
+        System.out.println("Attempting to retrieve " + imageToRetrieve);
+        System.out.println("If not, we'll fall back on " + m_imageName);
         if (item.canGetString(imageToRetrieve)) {
             return item.getString(imageToRetrieve);
         } else if (item.canGetString(m_imageName)) {
@@ -72,9 +85,9 @@ public class MultiScaleLabelRenderer extends LabelRenderer {
 
     private Resolution getResolution(int availableItems) {
         Resolution resolution = Resolution.L;
-        if (availableItems < 10) {
+        if (availableItems < detailedLimit) {
             resolution = Resolution.S;
-        } else if (availableItems < 20) {
+        } else if (availableItems < mediumLimit) {
             resolution = Resolution.M;
         }
         return resolution;

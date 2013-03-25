@@ -102,11 +102,10 @@ public class GraphView extends JPanel {
         focusGroup.addTupleSetListener(new TupleSetListener() {
             public void tupleSetChanged(TupleSet ts, Tuple[] add, Tuple[] rem)
             {
-                for ( int i=0; i<rem.length; ++i )
-                    ((VisualItem)rem[i]).setFixed(false);
-                for ( int i=0; i<add.length; ++i ) {
-                    ((VisualItem)add[i]).setFixed(false);
-                    ((VisualItem)add[i]).setFixed(true);
+                for (Tuple aRem : rem) ((VisualItem) aRem).setFixed(false);
+                for (Tuple anAdd : add) {
+                    ((VisualItem) anAdd).setFixed(false);
+                    ((VisualItem) anAdd).setFixed(true);
                 }
                 if ( ts.getTupleCount() == 0 ) {
                     ts.addTuple(rem[0]);
